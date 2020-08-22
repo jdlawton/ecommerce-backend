@@ -3,10 +3,8 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
 
-// get all products
+//GET all products
 router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
   Product.findAll({
     include: [
       {
@@ -24,10 +22,8 @@ router.get('/', (req, res) => {
     });
 });
 
-// get one product
+//Get individual product based on id
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
   Product.findOne({
     where: {
       id: req.params.id
@@ -48,7 +44,8 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// create new product
+//POST a new product
+//Even though the sample body here doesn't include the category_id, I updated my route to include this information as well.
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
@@ -86,9 +83,8 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
+//PUT (UPDATE) a product according to its id. Again, I included caterogy_id in the PUT route so that can be updated as well.
 router.put('/:id', (req, res) => {
-  // update product data
   Product.update(req.body, {
     where: {
       id: req.params.id,
@@ -130,13 +126,13 @@ router.put('/:id', (req, res) => {
     })
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       res.status(400).json(err);
     });
 });
 
+//DELETE a product according to its id
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
   Product.destroy({
     where: {
       id: req.params.id
